@@ -22,7 +22,16 @@ async function run() {
   try {
     await client.connect();
     const userCollections = client.db("express").collection("user");
+// get dat 
+app.get('/user',async(req,res) => {
+  const query={};
+  const cursor=userCollections.find(query)
+  const users=await cursor.toArray()
+  res.send(users)
+})
 
+
+    // Post data 
     app.post('/user',async(req,res)=>{
       const newUser=req.body;
       console.log('ary ready for adding new user',newUser);
