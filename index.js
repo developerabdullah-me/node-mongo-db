@@ -18,16 +18,22 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
- async function run (){
-try{
-await client.connect()
-const userCollections = client.db('express').collection('user')
-}
-finally{
+async function run() {
+  try {
+    await client.connect();
+    const userCollections = client.db("express").collection("user");
 
+    app.post('/user',async(req,res)=>{
+      const newUser=req.body;
+      console.log('ary ready for adding new user',newUser);
+      const result=await userCollections.insertOne(newUser);
+      res.send(result);
+    })
+  }
+   finally {
+  }
 }
- }
-run ().catch(console.dir)
+run().catch(console.dir);
 app.get("/", (req, res) => {
   res.send("anni vala achinnikan");
 });
