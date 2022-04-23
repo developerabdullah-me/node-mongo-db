@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
+const ObjectId = require('mongodb').ObjectId;
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -30,6 +31,12 @@ app.get('/user',async(req,res) => {
   res.send(users)
 })
 
+app.get('/user/:id',async(req,res) => {
+  const id=req.params.id
+  const query={_id:ObjectId(id)}
+  const result=await userCollections.find(query)
+  res.send(result)
+})
 
     // Post data 
     app.post('/user',async(req,res)=>{
@@ -37,6 +44,13 @@ app.get('/user',async(req,res) => {
       console.log('ary ready for adding new user',newUser);
       const result=await userCollections.insertOne(newUser);
       res.send(result);
+    })
+    // delete
+    app.delete('/user/:id',async(req,res)=>{
+      const id=req.params.id;
+      const query={_id:ObjectId(id)}
+     const result=await userCollections.deleteOne(query);
+     res.send(result);
     })
   }
    finally {
